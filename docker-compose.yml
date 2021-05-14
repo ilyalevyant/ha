@@ -1,0 +1,33 @@
+version: '2'
+
+services:
+  worker:
+    build: .
+    links:
+      - db
+    volumes:
+      - .:/code
+    command:
+      sh worker.sh
+
+  app:
+    build: .
+    ports:
+        - "8000:8000"
+    links:
+        - db
+    volumes:
+        - .:/code
+    command:
+      bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    environment:
+      DJANGO_SETTINGS_MODULE: crispy.settings.docker
+
+  db:
+    image: postgres:9.6
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: crispy
+    volumes:
+      - ./tmp/pgdata:/var/lib/postgresql/data:rw

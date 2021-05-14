@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+  worker:
+    build: .
+    volumes:
+      - .:/code
+    command:
+      sh worker.sh
+    environment:
+      DJANGO_SETTINGS_MODULE: crispy.settings.docker_machine
+
+  app:
+    build: .
+    ports:
+        - "8000:8000"
+    volumes:
+        - .:/code
+    command:
+      bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    environment:
+      DJANGO_SETTINGS_MODULE: crispy.settings.docker_machine
