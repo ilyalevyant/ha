@@ -1,0 +1,7 @@
+allure-pytest
+pytest
+selenium-wire
+page_objects
+webdriver-manager
+# blinker<1.8.0 should be installed to prevent issue with selenium-wire
+blinker==1.7.0
